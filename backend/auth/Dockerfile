@@ -1,0 +1,2 @@
+# Разрабатывается
+FROM postgres:latest
