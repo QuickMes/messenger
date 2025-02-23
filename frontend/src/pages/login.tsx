@@ -48,7 +48,7 @@ export default function LoginPage() {
 				/>
 				<input
 					type="password"
-					placeholder="Пароль"
+					placeholder="Password"
 					className="border p-2 mb-4 w-full"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
