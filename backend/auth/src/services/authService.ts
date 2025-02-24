@@ -1,9 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { prisma } from 'shared-prisma';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'test';
-const prisma = new PrismaClient();
 
 export const registerUser = async (email: string, password: string) => {
 	// Проверка есть ли пользователь с таким email в бд

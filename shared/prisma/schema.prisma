@@ -1,0 +1,49 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Модели для Auth-сервиса
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Модели для Chat-сервиса
+model Chat {
+  id                  Int          @id @default(autoincrement())
+  name                String
+  ownerId             Int
+  invitationEnabled   Boolean      @default(false)
+  invitationLink      String?      @unique
+  invitationExpiresAt DateTime?
+  createdAt           DateTime     @default(now())
+  messages            Message[]
+  members             ChatMember[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    Int
+  sender    String
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model ChatMember {
+  id       Int      @id @default(autoincrement())
+  chat     Chat     @relation(fields: [chatId], references: [id])
+  chatId   Int
+  userId   Int
+  joinedAt DateTime @default(now())
+
+  @@unique([chatId, userId])
+}

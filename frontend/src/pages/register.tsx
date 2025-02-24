@@ -32,7 +32,7 @@ export default function RegisterPage() {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-100">
+		<div className="mx-auto min-h-screen flex items-center justify-center bg-gray-100">
 			<form
 				onSubmit={handleRegister}
 				className="bg-white p-6 rounded shadow-md w-full max-w-sm">
