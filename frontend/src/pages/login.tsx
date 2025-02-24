@@ -21,7 +21,7 @@ export default function LoginPage() {
 			if (!res.ok) {
 				setError(data.error || 'Error logih');
 			} else {
-				// Сохранение токена, например, в localStorage
+				// Сохранение токена в localStorage
 				localStorage.setItem('token', data.token);
 				// Перенаправление в защищенную часть приложения
 				router.push('/dashboard');

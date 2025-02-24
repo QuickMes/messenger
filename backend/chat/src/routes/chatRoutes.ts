@@ -6,10 +6,11 @@ import {
 	getChats,
 	joinChat,
 } from '../controllers/chatController';
+import { authenticateJWT } from '../middlewares/authMiddleware';
 
 const router = Router();
 
-router.get('/', getChats); // Получение своего списка чатов для пользователя
+router.get('/', authenticateJWT, getChats); // Получение своего списка чатов для пользователя
 
 router.post('/', createChat); // Создание нового чата
 
