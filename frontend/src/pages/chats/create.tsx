@@ -1,5 +1,11 @@
+import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+
+interface JwtPayload {
+	id: number;
+	email: string;
+}
 
 export default function CreateChatPage() {
 	const router = useRouter();
@@ -15,7 +21,17 @@ export default function CreateChatPage() {
 			return;
 		}
 
-		const ownerId = 1; // TODO: Переписать добавить при авторизации сохранение своего id для ownerId
+		// const ownerId = 1; // TODO: Переписать добавить при авторизации сохранение своего id для ownerId
+
+		let ownerId: number;
+		try {
+			const decoded = jwtDecode<JwtPayload>(token);
+			ownerId = decoded.id;
+		} catch {
+			setError('Error with decode token');
+			return;
+		}
+
 		const payload = {
 			name,
 			ownerId,

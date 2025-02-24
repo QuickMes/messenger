@@ -18,7 +18,7 @@ export default function Dashboard() {
 	}, [router]);
 
 	if (loading) {
-		return <p>Загрузка...</p>;
+		return <p>Loading...</p>;
 	}
 
 	return (

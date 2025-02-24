@@ -1,5 +1,11 @@
+import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useState } from 'react';
+
+interface JwtPayload {
+	id: number;
+	email: string;
+}
 
 interface Message {
 	id: number;
@@ -33,6 +39,13 @@ export default function ChatDetailPage() {
 		e.preventDefault();
 		if (!id) return;
 		const token = localStorage.getItem('token');
+
+		// Перенаправляем на логин если токена нет
+		if (!token) {
+			window.location.href = '/login';
+			return;
+		}
+
 		try {
 			const res = await fetch(`http://localhost:5000/api/chats/${id}/message`, {
 				method: 'POST',
@@ -41,9 +54,7 @@ export default function ChatDetailPage() {
 					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify({
-					// TODO: Заменить sender на информацию о текущем пользователе,
-					// например, email или id, полученные при аутентификации
-					sender: 'user@example.com',
+					sender: jwtDecode<JwtPayload>(token).email,
 					content: newMessage,
 				}),
 			});

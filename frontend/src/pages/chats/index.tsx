@@ -54,7 +54,7 @@ export default function ChatListPage() {
 							key={chat.id}
 							className="border p-2 mb-2 rounded hover:bg-gray-100">
 							<Link href={`/chats/${chat.id}`}>
-								<a className="text-xl">{chat.name}</a>
+								<p className="text-xl">{chat.name}</p>
 							</Link>
 						</li>
 					))}
