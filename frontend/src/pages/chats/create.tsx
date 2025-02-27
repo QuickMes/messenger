@@ -10,7 +10,7 @@ interface JwtPayload {
 export default function CreateChatPage() {
 	const router = useRouter();
 	const [name, setName] = useState('');
-	const [invitationEnable, setInvitationEnable] = useState(false);
+	const [invitationEnabled, setInvitationEnabled] = useState(false);
 	const [error, setError] = useState('');
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -20,8 +20,6 @@ export default function CreateChatPage() {
 			router.push('/login');
 			return;
 		}
-
-		// const ownerId = 1; // TODO: Переписать добавить при авторизации сохранение своего id для ownerId
 
 		let ownerId: number;
 		try {
@@ -35,7 +33,7 @@ export default function CreateChatPage() {
 		const payload = {
 			name,
 			ownerId,
-			invitationEnable,
+			invitationEnabled,
 			friendIds: [], // TODO: Добавить функционал добавления друзей в чат
 		};
 
@@ -77,8 +75,8 @@ export default function CreateChatPage() {
 				<label className="flex items-center space-x-2">
 					<input
 						type="checkbox"
-						checked={invitationEnable}
-						onChange={(e) => setInvitationEnable(e.target.checked)}
+						checked={invitationEnabled}
+						onChange={(e) => setInvitationEnabled(e.target.checked)}
 					/>
 					<span>Include a link invitation (valid for 2 hours)</span>
 				</label>

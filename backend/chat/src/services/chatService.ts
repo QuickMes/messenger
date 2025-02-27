@@ -118,3 +118,57 @@ export const joinChatByInvitation = async (
 
 	return { chat, member };
 };
+
+// Присоединение к чату пользователя
+export const addUserToChat = async (chatId: number, userId: number) => {
+	// Проверка существует ли чат и если существует получаем список пользователей
+	const chat = await prisma.chat.findUnique({
+		where: { id: chatId },
+		include: { members: true },
+	});
+
+	if (!chat) {
+		throw new Error('Chat not found');
+	}
+
+	// Проверка является ли пользователь уже участником чата
+	const alreadyMember = chat.members.some((member) => member.userId === userId);
+	if (alreadyMember) {
+		throw new Error('The user is already a member of the chat room');
+	}
+
+	return prisma.chatMember.create({
+		data: {
+			chatId: chat.id,
+			userId,
+		},
+	});
+};
+
+// Функция генерации ссылки
+export const regenerateInvitationLink = async (
+	chatId: number,
+	ownerId: number,
+) => {
+	// Поиск чата по id
+	const chat = await prisma.chat.findUnique({ where: { id: chatId } });
+	if (!chat) {
+		throw new Error('Chat not found');
+	}
+
+	// Проверка что это владелец чата
+	if (chat.ownerId !== ownerId) {
+		throw new Error('Only the chat owner can update the invitation');
+	}
+
+	const invitationLink = uuidv4();
+	const invitationExpiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000);
+	return prisma.chat.update({
+		where: { id: chatId },
+		data: {
+			invitationLink,
+			invitationExpiresAt,
+			invitationEnabled: true,
+		},
+	});
+};

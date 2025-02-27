@@ -73,3 +73,27 @@ export const joinChat = async (req: Request, res: Response) => {
 		res.status(500).json({ error: error.messages });
 	}
 };
+
+// Добавление пользователя в чат
+export const addUserToChatController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+	try {
+		const chatId = parseInt(req.params.chatId, 10)
+		const {userId} = req.body
+		const member = await chatService.addUserToChat(chatId, userId)
+		res.status(201).json(member)
+	} catch (error: any) {
+		next(error)
+	}
+}
+
+// Для регенерации ссылок
+export const regenerateInvitationLinkController = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+	try {
+		const chatId = parseInt(req.params.chatId, 10)
+		const ownerId = req.user.id // из middleware
+		const updateChat = await chatService.regenerateInvitationLink(chatId, ownerId)
+		res.json(updateChat)
+	} catch (error: any) {
+		next(error)
+	}
+}
