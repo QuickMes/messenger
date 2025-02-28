@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"target": "ES2017",
+		"lib": ["esnext"],
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"paths": {
+			"shared-prisma": ["../../shared/prisma"],
+			"@/*": ["./src/*"]
+		}
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules"]
+}
